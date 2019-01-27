@@ -20,7 +20,7 @@ static int counter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    greetings = [NSArray arrayWithObjects:@"Hello!" @"Ni Hao!", nil];
+    greetings = [NSArray arrayWithObjects:@"Hello!", @"Ni Hao!", nil];
     counter = 0;
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -29,7 +29,7 @@ static int counter;
     
     [button setTitle:[greetings objectAtIndex:counter] forState:UIControlStateNormal];
     counter++;
-    if (counter > [greetings count]) {
+    if (counter >= [greetings count]) {
         counter = 0;
     }
 }
@@ -44,10 +44,11 @@ static int counter;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     
-    CABasicAnimation *fallDown = [CABasicAnimation animationWithKeyPath:@"position"];
-    fallDown.duration = 0.5;
-    fallDown.toValue = [NSValue valueWithCGPoint:CGPointMake(screenWidth/2, screenHeight + 60)];
-    [newLabel.layer addAnimation:fallDown forKey:@"falling"];
+    [UIView animateWithDuration:0.5 animations:^{
+        [newLabel setCenter:CGPointMake(screenWidth/2, screenHeight + 60)];
+    } completion:^(BOOL finished) {
+        [newLabel removeFromSuperview];
+    }];
 }
 
 - (IBAction)spinButton:(id)sender {
