@@ -12,7 +12,8 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet UIButton *button;
+@property (nonatomic, strong) IBOutlet UILabel *greetLabel;
+@property (nonatomic, readwrite) UIGestureRecognizerState state;
 
 @end
 
