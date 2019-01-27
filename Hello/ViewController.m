@@ -77,8 +77,8 @@ static int counter;
     [self nextMessage];
     
     // Play falling animation, then remove
-    [UIView animateWithDuration:0.3 animations:^{
-        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+60)];
+    [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+300)];
     } completion:^(BOOL finished) {
         [fallLabel removeFromSuperview];
     }];
