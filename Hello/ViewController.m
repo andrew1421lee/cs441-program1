@@ -15,13 +15,23 @@
 @implementation ViewController
 @synthesize button;
 
+static NSArray *greetings;
+static int counter;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    greetings = [NSArray arrayWithObjects:@"Hello!" @"Ni Hao!", nil];
+    counter = 0;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (IBAction)changeMessage:(id)sender {
-    [button setTitle:@"Ni Hao" forState:UIControlStateNormal];
+    
+    [button setTitle:[greetings objectAtIndex:counter] forState:UIControlStateNormal];
+    counter++;
+    if (counter > [greetings count]) {
+        counter = 0;
+    }
 }
 
 - (IBAction)dropText:(id)sender {
@@ -31,10 +41,12 @@
     newLabel.textAlignment = NSTextAlignmentCenter;
     [[self view] addSubview:newLabel];
     
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     
     CABasicAnimation *fallDown = [CABasicAnimation animationWithKeyPath:@"position"];
     fallDown.duration = 0.5;
-    fallDown.toValue = [NSValue valueWithCGPoint:CGPointMake(100, 100)];
+    fallDown.toValue = [NSValue valueWithCGPoint:CGPointMake(screenWidth/2, screenHeight + 60)];
     [newLabel.layer addAnimation:fallDown forKey:@"falling"];
 }
 
