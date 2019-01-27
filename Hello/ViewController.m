@@ -13,47 +13,84 @@
 @end
 
 @implementation ViewController
-@synthesize button;
+@synthesize greetLabel;
 
 static NSArray *greetings;
 static int counter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"Здравствуйте!", nil];
+    greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"звать!", @"Salut!", @"Witaj!", @"Cheerio!", @"o/", @"Wassup!", nil];
     counter = 0;
+    
+    UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    [tap setMinimumPressDuration:0];
+    [self.view addGestureRecognizer:tap];
+
     // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (IBAction)changeMessage:(id)sender {
     
-    [button setTitle:[greetings objectAtIndex:counter] forState:UIControlStateNormal];
+    [greetLabel setText:[greetings objectAtIndex:counter]];
     counter++;
     if (counter >= [greetings count]) {
         counter = 0;
     }
 }
 
-- (IBAction)dropText:(id)sender {
-    UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,303, 375, 60)];
-    [newLabel setText: [button titleForState:UIControlStateNormal]];
-    [newLabel setFont:[UIFont systemFontOfSize:40]];
-    newLabel.textAlignment = NSTextAlignmentCenter;
-    [[self view] addSubview:newLabel];
-    [self nextMessage];
-    
+- (void)onTap:(UITapGestureRecognizer *)recognizer {
+    //button.titleLabel.font = [UIFont systemFontOfSize:40];
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [UIView animateWithDuration:0.1 animations:^{
+            //[self->greetLabel setFont:[UIFont systemFontOfSize:40]];
+            self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 0.75, 0.75);
+            
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.1 animations:^{
+                self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 1/0.75, 1/0.75);
+            }];
+        }];
+        
+        [self dropText];
+        //[greetLabel setFont:[UIFont systemFontOfSize:40]];
+        //[greetLabel setText:@"what"];
+    }
+    /*else if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self dropText];
+    }*/
+}
+
+- (void)dropText {
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     
+    // Create Label that falls directly from the button
+    UILabel *fallLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,303, 375, 60)];
+    [fallLabel setText: [greetLabel text]];
+    [fallLabel setFont:[UIFont systemFontOfSize:40]];
+    fallLabel.textAlignment = NSTextAlignmentCenter;
+    [[self view] addSubview:fallLabel];
+    
+    // Set button to next message
+    [self nextMessage];
+    
+    // Play falling animation, then remove
     [UIView animateWithDuration:0.3 animations:^{
-        [newLabel setCenter:CGPointMake(screenWidth/2, screenHeight + 60)];
+        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+60)];
     } completion:^(BOOL finished) {
-        [newLabel removeFromSuperview];
+        [fallLabel removeFromSuperview];
     }];
 }
 
 - (void) nextMessage {
-    [button setTitle:[greetings objectAtIndex:counter] forState:UIControlStateNormal];
+    // Set title to a variable in the array
+    [greetLabel setText:[greetings objectAtIndex:counter]];
+    [greetLabel setFont:[UIFont systemFontOfSize:70]];
+    //button.titleLabel.font = [UIFont systemFontOfSize:70];
+    
+    // Choose the next index
     counter++;
     if (counter >= [greetings count]) {
         counter = 0;
@@ -69,7 +106,7 @@ static int counter;
     
     //button.transform = CGAffineTransformMakeRotation(M_PI / -4);
     
-    [self.button.layer addAnimation:fullRotation forKey:@"myRotationAnimation"];
+    [self.greetLabel.layer addAnimation:fullRotation forKey:@"myRotationAnimation"];
 }
 
 @end
