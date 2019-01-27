@@ -24,7 +24,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <state key="normal" title="Hello!"/>
                                 <connections>
-                                    <action selector="changeMessage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="96G-tW-zB4"/>
+                                    <action selector="spinButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AcV-5m-aED"/>
                                 </connections>
                             </button>
                         </subviews>
