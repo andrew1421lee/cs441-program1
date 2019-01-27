@@ -20,7 +20,7 @@ static int counter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    greetings = [NSArray arrayWithObjects:@"Hello!", @"Ni Hao!", nil];
+    greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"Здравствуйте!", nil];
     counter = 0;
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -40,6 +40,7 @@ static int counter;
     [newLabel setFont:[UIFont systemFontOfSize:40]];
     newLabel.textAlignment = NSTextAlignmentCenter;
     [[self view] addSubview:newLabel];
+    [self nextMessage];
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -49,6 +50,14 @@ static int counter;
     } completion:^(BOOL finished) {
         [newLabel removeFromSuperview];
     }];
+}
+
+- (void) nextMessage {
+    [button setTitle:[greetings objectAtIndex:counter] forState:UIControlStateNormal];
+    counter++;
+    if (counter >= [greetings count]) {
+        counter = 0;
+    }
 }
 
 - (IBAction)spinButton:(id)sender {
