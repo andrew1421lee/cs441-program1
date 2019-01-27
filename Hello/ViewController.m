@@ -24,6 +24,20 @@
     [button setTitle:@"Ni Hao" forState:UIControlStateNormal];
 }
 
+- (IBAction)dropText:(id)sender {
+    UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,303, 375, 60)];
+    [newLabel setText: [button titleForState:UIControlStateNormal]];
+    [newLabel setFont:[UIFont systemFontOfSize:40]];
+    newLabel.textAlignment = NSTextAlignmentCenter;
+    [[self view] addSubview:newLabel];
+    
+    
+    CABasicAnimation *fallDown = [CABasicAnimation animationWithKeyPath:@"position"];
+    fallDown.duration = 0.5;
+    fallDown.toValue = [NSValue valueWithCGPoint:CGPointMake(100, 100)];
+    [newLabel.layer addAnimation:fallDown forKey:@"falling"];
+}
+
 - (IBAction)spinButton:(id)sender {
     
     CABasicAnimation *fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
