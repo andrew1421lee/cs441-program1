@@ -26,10 +26,10 @@
 
 - (IBAction)spinButton:(id)sender {
     
-    CABasicAnimation *fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotate"];
+    CABasicAnimation *fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
     fullRotation.byValue = @(M_PI*2);
-    fullRotation.fromValue = self.view.layer.presentationLayer;
-    fullRotation.duration = 30.0;
+    //fullRotation.fromValue = self.view.layer.presentationLayer;
+    fullRotation.duration = 0.5;
     
     //button.transform = CGAffineTransformMakeRotation(M_PI / -4);
     
