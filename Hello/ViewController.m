@@ -45,7 +45,7 @@ static int counter;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         [newLabel setCenter:CGPointMake(screenWidth/2, screenHeight + 60)];
     } completion:^(BOOL finished) {
         [newLabel removeFromSuperview];
