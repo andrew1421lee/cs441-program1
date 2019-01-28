@@ -16,12 +16,16 @@
 @synthesize greetLabel;
 
 static NSArray *greetings;
-static int counter;
+static NSArray *colors;
+static int greetingIndex;
+static int colorCounter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"звать!", @"Salut!", @"Witaj!", @"Cheerio!", @"o/", @"Wassup!", nil];
-    counter = 0;
+    colors = [NSArray arrayWithObjects: [UIColor redColor], [UIColor orangeColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor], nil];
+    greetingIndex = 0;
+    colorCounter = 1;
     
     UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     [tap setMinimumPressDuration:0];
@@ -32,10 +36,10 @@ static int counter;
 
 - (IBAction)changeMessage:(id)sender {
     
-    [greetLabel setText:[greetings objectAtIndex:counter]];
-    counter++;
-    if (counter >= [greetings count]) {
-        counter = 0;
+    [greetLabel setText:[greetings objectAtIndex:greetingIndex]];
+    greetingIndex++;
+    if (greetingIndex >= [greetings count]) {
+        greetingIndex = 0;
     }
 }
 
@@ -69,6 +73,7 @@ static int counter;
     // Create Label that falls directly from the button
     UILabel *fallLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,303, 375, 60)];
     [fallLabel setText: [greetLabel text]];
+    [fallLabel setTextColor:[greetLabel textColor]];
     [fallLabel setFont:[UIFont systemFontOfSize:40]];
     fallLabel.textAlignment = NSTextAlignmentCenter;
     [[self view] addSubview:fallLabel];
@@ -86,14 +91,23 @@ static int counter;
 
 - (void) nextMessage {
     // Set title to a variable in the array
-    [greetLabel setText:[greetings objectAtIndex:counter]];
-    [greetLabel setFont:[UIFont systemFontOfSize:70]];
-    //button.titleLabel.font = [UIFont systemFontOfSize:70];
+    [greetLabel setText:[greetings objectAtIndex:greetingIndex]];
+    [greetLabel setTextColor:[colors objectAtIndex:colorCounter]];
+    //[greetLabel setFont:[UIFont systemFontOfSize:70]];
     
-    // Choose the next index
-    counter++;
-    if (counter >= [greetings count]) {
-        counter = 0;
+    // Choose the next index, dont allow the same one twice
+    int newIndex = arc4random_uniform((uint32_t) [greetings count]);
+    while(greetingIndex == newIndex)
+    {
+        newIndex = arc4random_uniform((uint32_t) [greetings count]);
+    }
+    greetingIndex = newIndex;
+    
+    // Choose next color
+    colorCounter++;
+    if(colorCounter >= [colors count])
+    {
+        colorCounter = 0;
     }
 }
 
