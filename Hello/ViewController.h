@@ -15,6 +15,8 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UILabel *greetLabel;
+@property (nonatomic, strong) IBOutlet UILabel *tapLabel;
+@property (nonatomic, strong) IBOutlet UILabel *tapCounter;
 @property (nonatomic, readwrite) UIGestureRecognizerState state;
 
 @end

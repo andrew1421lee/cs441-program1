@@ -45,6 +45,8 @@
                     </view>
                     <connections>
                         <outlet property="greetLabel" destination="lNi-6z-Uov" id="49h-yP-TF7"/>
+                        <outlet property="tapCounter" destination="0Ki-Pj-Zcy" id="XQJ-ca-Gkk"/>
+                        <outlet property="tapLabel" destination="mFD-85-Z17" id="lBr-5n-9z1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
