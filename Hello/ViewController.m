@@ -13,13 +13,13 @@
 @end
 
 @implementation ViewController
-@synthesize greetLabel;
+@synthesize greetLabel, tapLabel, tapCounter;
 
 static NSArray *greetings;
 static NSArray *colors;
 static int greetingIndex;
 static int colorCounter;
-static int tapCounter;
+static int tapTotal;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,7 +27,7 @@ static int tapCounter;
     colors = [NSArray arrayWithObjects: [UIColor redColor], [UIColor orangeColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor], nil];
     greetingIndex = 0;
     colorCounter = 1;
-    tapCounter = 0;
+    tapTotal = 0;
     
     UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     [tap setMinimumPressDuration:0];
@@ -47,14 +47,23 @@ static int tapCounter;
 
 - (void)onTap:(UITapGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateBegan) {
-        tapCounter++;
-        
+        tapTotal++;
+        if(tapTotal >= 10 && [tapLabel isHidden])
+        {
+            [tapLabel setHidden:false];
+            [tapCounter setHidden:false];
+        }
         
         [UIView animateWithDuration:0.1 animations:^{
             self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 0.75, 0.75);
+            self->tapCounter.transform = CGAffineTransformScale(self->tapCounter.transform, 0.90, 0.90);
+        
         } completion:^(BOOL finished) {
+            [self->tapCounter setText:[NSString stringWithFormat:@"%d", tapTotal]];
+            
             [UIView animateWithDuration:0.1 animations:^{
                 self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 1/0.75, 1/0.75);
+                self->tapCounter.transform = CGAffineTransformScale(self->tapCounter.transform, 1/0.90, 1/0.90);
             }];
         }];
         
@@ -93,6 +102,9 @@ static int tapCounter;
     // Set title to a variable in the array
     [greetLabel setText:[greetings objectAtIndex:greetingIndex]];
     [greetLabel setTextColor:[colors objectAtIndex:colorCounter]];
+    
+    [tapLabel setTextColor:[colors objectAtIndex:colorCounter]];
+    [tapCounter setTextColor:[colors objectAtIndex:colorCounter]];
     
     // Choose the next index, dont allow the same one twice
     int newIndex = arc4random_uniform((uint32_t) [greetings count]);
