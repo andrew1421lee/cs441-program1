@@ -23,7 +23,7 @@ static int tapTotal;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"звать!", @"Salut!", @"Witaj!", @"Cheerio!", @"o/", @"Wassup!", nil];
+    greetings = [NSArray arrayWithObjects:@"Hello!", @"¡Hola!", @"مرحبا!", @"שלום!", @"你好!", @"Hallo!", @"こんにちは!", @"สวัสดี!", @"여보세요!", @"звать!", @"Salut!", @"Witaj!", @"Cheerio!", @"o/", @"Wassup!", @"Zdravo!", @"Привіт!", @"ဟယ်လို!", @"Xin Chào!", @"Olá!", @"Ahoj!", @"سلام!", @"Dia Dhuit!", @"Hej!", @"nuqneH!", @"G'day Mate!", @"\(•◡•)/", @"HEWWO!!?", nil];
     colors = [NSArray arrayWithObjects: [UIColor redColor], [UIColor orangeColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor], nil];
     greetingIndex = 1;
     colorCounter = 1;
