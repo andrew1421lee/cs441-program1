@@ -19,6 +19,7 @@ static NSArray *greetings;
 static NSArray *colors;
 static int greetingIndex;
 static int colorCounter;
+static int tapCounter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,6 +27,7 @@ static int colorCounter;
     colors = [NSArray arrayWithObjects: [UIColor redColor], [UIColor orangeColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor purpleColor], nil];
     greetingIndex = 0;
     colorCounter = 1;
+    tapCounter = 0;
     
     UILongPressGestureRecognizer *tap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     [tap setMinimumPressDuration:0];
@@ -44,12 +46,12 @@ static int colorCounter;
 }
 
 - (void)onTap:(UITapGestureRecognizer *)recognizer {
-    //button.titleLabel.font = [UIFont systemFontOfSize:40];
     if (recognizer.state == UIGestureRecognizerStateBegan) {
+        tapCounter++;
+        
+        
         [UIView animateWithDuration:0.1 animations:^{
-            //[self->greetLabel setFont:[UIFont systemFontOfSize:40]];
             self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 0.75, 0.75);
-            
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.1 animations:^{
                 self->greetLabel.transform = CGAffineTransformScale(self->greetLabel.transform, 1/0.75, 1/0.75);
@@ -57,13 +59,7 @@ static int colorCounter;
         }];
         
         [self dropText];
-        //[greetLabel setFont:[UIFont systemFontOfSize:40]];
-        //[greetLabel setText:@"what"];
     }
-    /*else if (recognizer.state == UIGestureRecognizerStateEnded)
-    {
-        [self dropText];
-    }*/
 }
 
 - (void)dropText {
@@ -97,7 +93,6 @@ static int colorCounter;
     // Set title to a variable in the array
     [greetLabel setText:[greetings objectAtIndex:greetingIndex]];
     [greetLabel setTextColor:[colors objectAtIndex:colorCounter]];
-    //[greetLabel setFont:[UIFont systemFontOfSize:70]];
     
     // Choose the next index, dont allow the same one twice
     int newIndex = arc4random_uniform((uint32_t) [greetings count]);
@@ -119,10 +114,7 @@ static int colorCounter;
     
     CABasicAnimation *fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
     fullRotation.byValue = @(M_PI*2);
-    //fullRotation.fromValue = self.view.layer.presentationLayer;
     fullRotation.duration = 0.5;
-    
-    //button.transform = CGAffineTransformMakeRotation(M_PI / -4);
     
     [self.greetLabel.layer addAnimation:fullRotation forKey:@"myRotationAnimation"];
 }
