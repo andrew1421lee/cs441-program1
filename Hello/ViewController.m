@@ -83,7 +83,8 @@ static int colorCounter;
     
     // Play falling animation, then remove
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+300)];
+        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+60)];
+        [fallLabel setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [fallLabel removeFromSuperview];
     }];
