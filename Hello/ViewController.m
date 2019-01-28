@@ -70,8 +70,11 @@ static int colorCounter;
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
     
+    // find position
+    int adjustment = arc4random_uniform(100) - 50;
+    
     // Create Label that falls directly from the button
-    UILabel *fallLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,303, 375, 60)];
+    UILabel *fallLabel = [[UILabel alloc] initWithFrame:CGRectMake(0 + adjustment,303, 375, 60)];
     [fallLabel setText: [greetLabel text]];
     [fallLabel setTextColor:[greetLabel textColor]];
     [fallLabel setFont:[UIFont systemFontOfSize:40]];
@@ -83,7 +86,7 @@ static int colorCounter;
     
     // Play falling animation, then remove
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        [fallLabel setCenter:CGPointMake(screenWidth/2, screenHeight+60)];
+        [fallLabel setCenter:CGPointMake(screenWidth/2 + adjustment, screenHeight+60)];
         [fallLabel setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [fallLabel removeFromSuperview];
