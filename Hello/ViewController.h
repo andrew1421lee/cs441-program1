@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import <stdlib.h>
+
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UILabel *greetLabel;
