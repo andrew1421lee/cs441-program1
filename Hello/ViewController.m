@@ -40,7 +40,7 @@ static int secondsElapsed;
     
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFunction) userInfo:Nil repeats:YES];
     
-    [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(speedometerUpdate) userInfo:Nil repeats:YES];
+    //[NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(speedometerUpdate) userInfo:Nil repeats:YES];
     
     // Set up tap detector
     // Using long press gesture set to 0 to grab press-down
@@ -68,17 +68,24 @@ static int secondsElapsed;
     secondsElapsed = 0;
     avgTapsPerSecond = 0;
     [self->speedometer setText:@"0.00"];
+    //[self animateSPEED];
     [self resetSpeedometerTimer];
 }
 
+/*
 - (void) speedometerUpdate {
     [self->speedometer setText:[NSString stringWithFormat:@"%.02f", avgTapsPerSecond]];
 }
+*/
 
 - (void) timerFunction {
     secondsElapsed++;
     avgTapsPerSecond = (avgTapsPerSecond * (secondsElapsed - 1) + tapsInLastSecond) / secondsElapsed;
     tapsInLastSecond = 0;
+    [self->speedometer setText:[NSString stringWithFormat:@"%.02f", avgTapsPerSecond]];
+    if(avgTapsPerSecond >= 5) {
+        [self animateSPEED];
+    }
 }
 
 // Method called when tapped
@@ -99,7 +106,10 @@ static int secondsElapsed;
         {
             [speedoLabel setHidden:false];
             [speedometer setHidden:false];
+            secondsElapsed = 0;
+            avgTapsPerSecond = 0;
             [self animateSpeedometerAppear];
+            [self animateSPEED];
         }
         
         // Animate labels
@@ -128,6 +138,23 @@ static int secondsElapsed;
     [explosiveLabel setText: [speedoLabel text]];
     [explosiveLabel setTextColor: [UIColor redColor]];
     [explosiveLabel setFont:[UIFont systemFontOfSize:17]];
+    explosiveLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [[self view] addSubview:explosiveLabel];
+    
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        explosiveLabel.transform = CGAffineTransformScale(explosiveLabel.transform, 2, 2);
+        [explosiveLabel setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void) animateSPEED {
+    UILabel *explosiveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 241, 375, 42)];
+    [explosiveLabel setText: [speedometer text]];
+    [explosiveLabel setTextColor: [UIColor redColor]];
+    [explosiveLabel setFont:[UIFont systemFontOfSize:35]];
     explosiveLabel.textAlignment = NSTextAlignmentCenter;
     
     [[self view] addSubview:explosiveLabel];
