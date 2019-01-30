@@ -13,10 +13,11 @@
 @end
 
 @implementation ViewController
-@synthesize greetLabel, tapLabel, tapCounter, speedometer;
+@synthesize greetLabel, tapLabel, tapCounter, speedometer, speedoLabel;
 
 static NSArray *greetings;
 static NSArray *colors;
+static NSTimer *idleTimer;
 static int greetingIndex;
 static int colorCounter;
 static int tapTotal;
@@ -50,6 +51,26 @@ static int secondsElapsed;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void) resetSpeedometerTimer {
+    if(!idleTimer) {
+        idleTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(idleTimerExceeded) userInfo:Nil repeats:NO];
+    }
+    else {
+        if (fabs([idleTimer.fireDate timeIntervalSinceNow]) < 3-1.0) {
+            [idleTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:3]];
+        }
+    }
+}
+
+- (void)idleTimerExceeded {
+    idleTimer = nil;
+    //[self startScreenSaverOrSomethingInteresting];
+    secondsElapsed = 0;
+    avgTapsPerSecond = 0;
+    [self->speedometer setText:@"0.00"];
+    [self resetSpeedometerTimer];
+}
+
 - (void) speedometerUpdate {
     [self->speedometer setText:[NSString stringWithFormat:@"%.02f", avgTapsPerSecond]];
 }
@@ -64,6 +85,7 @@ static int secondsElapsed;
 - (void)onTap:(UITapGestureRecognizer *)recognizer {
     // Check if call is from initial touch
     if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [self resetSpeedometerTimer];
         
         // Tap counter code
         tapTotal++;
@@ -75,6 +97,7 @@ static int secondsElapsed;
         }
         if(tapTotal >= 20 && [speedometer isHidden])
         {
+            [speedoLabel setHidden:false];
             [speedometer setHidden:false];
         }
         
