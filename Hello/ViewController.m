@@ -99,6 +99,7 @@ static int secondsElapsed;
         {
             [speedoLabel setHidden:false];
             [speedometer setHidden:false];
+            [self animateSpeedometerAppear];
         }
         
         // Animate labels
@@ -122,7 +123,24 @@ static int secondsElapsed;
     }
 }
 
-- (void)dropText {
+- (void) animateSpeedometerAppear {
+    UILabel *explosiveLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 212, 375, 21)];
+    [explosiveLabel setText: [speedoLabel text]];
+    [explosiveLabel setTextColor: [UIColor redColor]];
+    [explosiveLabel setFont:[UIFont systemFontOfSize:17]];
+    explosiveLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [[self view] addSubview:explosiveLabel];
+    
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        explosiveLabel.transform = CGAffineTransformScale(explosiveLabel.transform, 2, 2);
+        [explosiveLabel setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        //
+    }];
+}
+
+- (void) dropText {
     // Get screen dimensions
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
