@@ -13,13 +13,17 @@
 @end
 
 @implementation ViewController
-@synthesize greetLabel, tapLabel, tapCounter;
+@synthesize greetLabel, tapLabel, tapCounter, speedometer;
 
 static NSArray *greetings;
 static NSArray *colors;
 static int greetingIndex;
 static int colorCounter;
 static int tapTotal;
+
+static int tapsInLastSecond;
+static float avgTapsPerSecond;
+static int secondsElapsed;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,6 +32,14 @@ static int tapTotal;
     greetingIndex = 1;
     colorCounter = 1;
     tapTotal = 0;
+    
+    tapsInLastSecond = 0;
+    avgTapsPerSecond = 0;
+    secondsElapsed = 0;
+    
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerFunction) userInfo:Nil repeats:YES];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(speedometerUpdate) userInfo:Nil repeats:YES];
     
     // Set up tap detector
     // Using long press gesture set to 0 to grab press-down
@@ -38,15 +50,15 @@ static int tapTotal;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-/*
-- (IBAction)changeMessage:(id)sender {
-    
-    [greetLabel setText:[greetings objectAtIndex:greetingIndex]];
-    greetingIndex++;
-    if (greetingIndex >= [greetings count]) {
-        greetingIndex = 0;
-    }
-}*/
+- (void) speedometerUpdate {
+    [self->speedometer setText:[NSString stringWithFormat:@"%.02f", avgTapsPerSecond]];
+}
+
+- (void) timerFunction {
+    secondsElapsed++;
+    avgTapsPerSecond = (avgTapsPerSecond * (secondsElapsed - 1) + tapsInLastSecond) / secondsElapsed;
+    tapsInLastSecond = 0;
+}
 
 // Method called when tapped
 - (void)onTap:(UITapGestureRecognizer *)recognizer {
@@ -55,10 +67,15 @@ static int tapTotal;
         
         // Tap counter code
         tapTotal++;
+        tapsInLastSecond++;
         if(tapTotal >= 10 && [tapLabel isHidden])
         {
             [tapLabel setHidden:false];
             [tapCounter setHidden:false];
+        }
+        if(tapTotal >= 20 && [speedometer isHidden])
+        {
+            [speedometer setHidden:false];
         }
         
         // Animate labels
@@ -136,15 +153,5 @@ static int tapTotal;
         colorCounter = 0;
     }
 }
-
-/*
-- (IBAction)spinButton:(id)sender {
-    
-    CABasicAnimation *fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-    fullRotation.byValue = @(M_PI*2);
-    fullRotation.duration = 0.5;
-    
-    [self.greetLabel.layer addAnimation:fullRotation forKey:@"myRotationAnimation"];
-}*/
 
 @end
